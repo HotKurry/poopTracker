@@ -7,8 +7,6 @@ import random
 
 tweetStr = "None"
 
-#twitter consumer and access information goes here
-
 
 api = Twython(apiKey,apiSecret,accessToken,accessTokenSecret)
 
