@@ -9,10 +9,6 @@ tweetStr = "None"
 
 #twitter consumer and access information goes here
 
-apiKey = 'v6882nGK17iOHUhnQFL65ophT'
-apiSecret = 'kOHri6nHigX7QGWYdR0qRGjGg1s7TPcZbl1kZSWQBdjWD8IR5V'
-accessToken = '950219077385146370-0imDPU3inE8tycaYsyUmSJKG9chDUS3'
-accessTokenSecret = 'qXJYCU8VTKrtqWzjkut5KRS6yProioIjASKvVFRUoKZ9l'
 
 api = Twython(apiKey,apiSecret,accessToken,accessTokenSecret)
 

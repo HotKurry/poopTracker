@@ -7,14 +7,6 @@ import elonthetools
 from datetime import datetime, timezone, timedelta
 
 
-
-#apikey: WOZhYWpxiKEv5nxfTreByuvnL
-
-#apikeysecret: Vzhcrnz1FF4cYLcq1CeVdLhkywLAFu8WfTebL4k1xvHZdh9oRD
-
-#bearertoken: AAAAAAAAAAAAAAAAAAAAAGJLZAEAAAAA7NEGCtwDgwdP01iZuazBXpfOWyE%3DV8kuGFQPb6aWGiZMKes90DhQb7eok83v7nuAnr6pp5avP0wnph
-
-
 df = elonthetools.updateCSV('elonmusk', 10)
 
 since1 = elonthetools.timesincePost(df, 0)
