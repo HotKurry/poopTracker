@@ -1,7 +1,10 @@
 import pandas as pd
+from sqlalchemy import null
 import tweepy
 from datetime import datetime, timezone, timedelta
 import logging
+
+#Twitter Keys
 
 auth = tweepy.OAuthHandler(apiKey, apiSecret)
 auth.set_access_token(accessToken, accessTokenSecret)
@@ -71,16 +74,19 @@ def postSomething(name, poopStart, screen_name, df):
     timePooping = now - startTime
     poopDensity = timePooping / poopStart
     myLastPost = ""
+    mystatusID = null
     statuses = api.user_timeline(screen_name = 'elonthetoilet', count = 1)
     for status in statuses:
         myLastPost = status.created_at
         postText = status.text
+        mystatusID = status.id
     poopUpdate = ''
     halfHour = timedelta(minutes=30)    
-    quiteDense = timedelta(minutes=3)
+    quiteDense = timedelta(minutes=4)
     veryDense = timedelta(minutes=2)
     densePoop = ''
     longPoop = ''
+    msg = ''
     if poopDensity < veryDense:
         densePoop = ' It\'s a bad one.'
     elif poopDensity < quiteDense:
@@ -103,6 +109,9 @@ def postSomething(name, poopStart, screen_name, df):
         logging.info(msg)
     else:
         logging.info('I don\'t know what\'s happening')
-    if postText != msg:
-        logging.info('posting')     
+    if postText != msg or msg != '':
+        logging.info('posting')
+        api.update_status(status = msg, in_reply_to_status_id = mystatusID, auto_populate_reply_metadata = True)
     return msg
+def testSomething():
+    api.update_status(status = 'This is only a test nobody is pooping.', in_reply_to_status_id = null, auto_populate_reply_metadata = True)

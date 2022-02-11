@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import sys
+from sqlalchemy import null
 import tweepy
 import pandas as pd
 import elonthetools
@@ -32,3 +33,4 @@ elif poopPosts == 1:
     logging.info(pooper + ' could be pooping but we aren\'t sure.')
 else:
     logging.info(pooper + ' is not pooping right now.')
+
