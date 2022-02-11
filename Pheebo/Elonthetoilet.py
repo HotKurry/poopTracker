@@ -5,28 +5,30 @@ import tweepy
 import pandas as pd
 import elonthetools
 from datetime import datetime, timezone, timedelta
+import logging
 
+#config Variables
+username = 'elonmusk'
+pooper = 'Elon Musk'
+updateNum = 10
+postGap = 10
 
-df = elonthetools.updateCSV('elonmusk', 10)
+#logger config
+logging.basicConfig(filename='app.log', level=logging.INFO, format= '[%(asctime)s] %(levelname)s - %(message)s')
 
+#Update post database return database as Dataframe
+df = elonthetools.updateCSV(username, updateNum)
+
+#Time since last post in database
 since1 = elonthetools.timesincePost(df, 0)
 
-since7 = elonthetools.timesincePost(df, 6)
+#find post when pooping started 
+poopPosts = elonthetools.poopingStart(postGap,df)
 
-poopPosts = elonthetools.poopingStart(10,df)
-
-now = datetime.now(timezone.utc)
-
-lastTime =  datetime.strptime(df.iat[0,1], '%Y-%m-%d %H:%M:%S%z')
-secTime =  datetime.strptime(df.iat[1,1], '%Y-%m-%d %H:%M:%S%z')
-therdTime =  datetime.strptime(df.iat[2,1], '%Y-%m-%d %H:%M:%S%z')
-
-
-print('new and last: ' + str(now - lastTime))
-
-print('last and next: ' + str(lastTime - secTime))
-print('next and next: ' + str(secTime - therdTime))
-
-print(poopPosts)
-if poopPosts != 0:
-    poopText = elonthetools.postSomething('Elon Musk', poopPosts,  'elonmusk', df)
+#Poop detection algorithm
+if poopPosts > 1:
+    poopText = elonthetools.postSomething(pooper , poopPosts,  username, df)
+elif poopPosts == 1:
+    logging.info(pooper + ' could be pooping but we aren\'t sure.')
+else:
+    logging.info(pooper + ' is not pooping right now.')

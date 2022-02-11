@@ -3,7 +3,6 @@ import tweepy
 from datetime import datetime, timezone, timedelta
 import logging
 
-
 auth = tweepy.OAuthHandler(apiKey, apiSecret)
 auth.set_access_token(accessToken, accessTokenSecret)
 api = tweepy.API(auth)
