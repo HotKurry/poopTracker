@@ -1,15 +1,25 @@
 import pandas as pd
-from sqlalchemy import null
+#from sqlalchemy import null
 import tweepy
 from datetime import datetime, timezone, timedelta
 import logging
+import os
+from os.path import exists
 
-#Twitter Keys
 
+homeFolder= os.getcwd()
 auth = tweepy.OAuthHandler(apiKey, apiSecret)
 auth.set_access_token(accessToken, accessTokenSecret)
 api = tweepy.API(auth)
 
+
+
+def initCSV():
+    file_exists = exists('Elontracker.csv')
+    if file_exists != True:
+        df2 = pd.DataFrame([], columns=[ 'Post ID', 'Date', 'Post Type', 'reply' ])
+        df2.to_csv('Elontracker.csv')
+        
 #Update Database with number 'count' number of faves and posts
 def updateCSV(screen_name , count):
     df = pd.read_csv('Elontracker.csv' , index_col=0)
@@ -74,7 +84,8 @@ def postSomething(name, poopStart, screen_name, df):
     timePooping = now - startTime
     poopDensity = timePooping / poopStart
     myLastPost = ""
-    mystatusID = null
+    postTest = ""
+    mystatusID = type(None)
     statuses = api.user_timeline(screen_name = 'elonthetoilet', count = 1)
     for status in statuses:
         myLastPost = status.created_at
@@ -95,6 +106,8 @@ def postSomething(name, poopStart, screen_name, df):
         longPoop = ' His leg is Asleep.'
     if myLastPost > startTime:
         poopUpdate = 'still '
+    else:
+        mystatusID = type(None)
     if poopStart == 2:
         msg = name + ' could be ' + poopUpdate + 'pooping.' +  densePoop + longPoop
         logging.info(msg)
@@ -114,4 +127,16 @@ def postSomething(name, poopStart, screen_name, df):
         api.update_status(status = msg, in_reply_to_status_id = mystatusID, auto_populate_reply_metadata = True)
     return msg
 def testSomething():
-    api.update_status(status = 'This is only a test nobody is pooping.', in_reply_to_status_id = null, auto_populate_reply_metadata = True)
+    myLastPost = ""
+    postTest = ""
+    mystatusID = type(None)
+    print(mystatusID)
+    logging.info(mystatusID)
+    statuses = api.user_timeline(screen_name = 'elonthetoilet', count = 1)
+    for status in statuses:
+        myLastPost = status.created_at
+        postText = status.text
+    print(mystatusID)
+    logging.info(mystatusID)
+    api.update_status(status = 'This is only a test nobody is pooping.', in_reply_to_status_id = mystatusID, auto_populate_reply_metadata = True)
+    
