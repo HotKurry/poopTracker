@@ -74,17 +74,18 @@ def poopingStart(mins, df):
             now = actTime
             actTime = datetime.strptime(df.iat[startPost,1], '%Y-%m-%d %H:%M:%S%z')
         else:
+            startPost -= 1
             break
     return startPost
 
 #Create a post based on action density, time and number of actions. return text
-def postSomething(name, poopStart, screen_name, df):
+def postSomething(name, poopStart, df):
     now = datetime.now(timezone.utc)
     startTime =  datetime.strptime(df.iat[poopStart,1], '%Y-%m-%d %H:%M:%S%z')
     timePooping = now - startTime
     poopDensity = timePooping / poopStart
     myLastPost = ""
-    postTest = ""
+    postText = ""
     mystatusID = type(None)
     statuses = api.user_timeline(screen_name = 'elonthetoilet', count = 1)
     for status in statuses:
@@ -98,6 +99,14 @@ def postSomething(name, poopStart, screen_name, df):
     densePoop = ''
     longPoop = ''
     msg = ''
+
+    #logging
+    logging.info('poopstart#: ' +str(poopStart))
+    logging.info('time between action during: ' +str(poopDensity))
+    logging.info('duration of pooping: ' + str(timePooping))
+    logging.info('Time of my last post: ' + str(myLastPost))
+    logging.info('When Pooping started: ' + str(startTime))
+    logging.info('Last post Text: ' + str(postText))
     if poopDensity < veryDense:
         densePoop = ' It\'s a bad one.'
     elif poopDensity < quiteDense:
@@ -108,25 +117,26 @@ def postSomething(name, poopStart, screen_name, df):
         poopUpdate = 'still '
     else:
         mystatusID = type(None)
-    if poopStart == 2:
+    if poopStart == 1:
         msg = name + ' could be ' + poopUpdate + 'pooping.' +  densePoop + longPoop
         logging.info(msg)
-    elif poopStart == 3:
+    elif poopStart == 2:
         msg = name + ' is probably ' + poopUpdate + 'pooping.' +  densePoop + longPoop
         logging.info(msg)
-    elif poopStart == 4:
+    elif poopStart == 3:
         msg = name + ' is ' + poopUpdate + 'pooping.' +  densePoop + longPoop
         logging.info(msg)
-    elif poopStart >= 5:
+    elif poopStart >= 4:
         msg = name + ' is definitely ' + poopUpdate + 'pooping.' +  densePoop + longPoop
         logging.info(msg)
     else:
         logging.info('I don\'t know what\'s happening')
-    if postText != msg or msg != '':
+    if postText != msg and msg != '':
         logging.info('posting')
         api.update_status(status = msg, in_reply_to_status_id = mystatusID, auto_populate_reply_metadata = True)
     return msg
-def testSomething():
+
+""" def testSomething():
     myLastPost = ""
     postTest = ""
     mystatusID = type(None)
@@ -139,4 +149,37 @@ def testSomething():
     print(mystatusID)
     logging.info(mystatusID)
     api.update_status(status = 'This is only a test nobody is pooping.', in_reply_to_status_id = mystatusID, auto_populate_reply_metadata = True)
-    
+
+
+def testTimepooping(df):
+    now = datetime.now(timezone.utc)
+    startTime =  datetime.strptime(df.iat[0,1], '%Y-%m-%d %H:%M:%S%z')
+    timePooping = now - startTime
+    print(timePooping)
+    logging.info(timePooping)
+    halfHour = timedelta(minutes=30)
+    print(halfHour)
+    logging.info(halfHour)
+    if timePooping > halfHour:
+        print('greater')
+    else:
+        print('lessthan')
+"""
+
+def testDoublepost():
+    name = "Elon Musk"
+    poopUpdate = 'still '
+    msg = ""
+    postText=""
+    msg = name + ' is definitely ' + poopUpdate + 'pooping.'
+    statuses = api.user_timeline(screen_name = 'elonthetoilet', count = 1)
+    for status in statuses:
+        myLastPost = status.created_at
+        postText = status.text
+    if postText != msg and msg != '':
+        logging.info(msg)
+        logging.info(postText)
+        logging.info('posting')
+    else:
+        logging.info('notposting')
+    return msg
