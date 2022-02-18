@@ -7,6 +7,7 @@ import os
 from os.path import exists
 
 
+
 homeFolder= os.getcwd()
 auth = tweepy.OAuthHandler(apiKey, apiSecret)
 auth.set_access_token(accessToken, accessTokenSecret)
@@ -131,7 +132,7 @@ def postSomething(name, poopStart, df):
         logging.info(msg)
     else:
         logging.info('I don\'t know what\'s happening')
-    if postText != msg and msg != '':
+    if (postText != msg or myLastPost > startTime) and msg != '':
         logging.info('posting')
         api.update_status(status = msg, in_reply_to_status_id = mystatusID, auto_populate_reply_metadata = True)
     return msg

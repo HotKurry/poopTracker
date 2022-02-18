@@ -39,4 +39,4 @@ else:
     logging.info(pooper + ' is not pooping right now.')
 
 #elonthetools.testTimepooping(df)
-elonthetools.testDoublepost()
+#elonthetools.testDoublepost()
